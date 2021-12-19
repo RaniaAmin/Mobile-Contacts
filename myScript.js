@@ -13,7 +13,7 @@ function displayList() {
 contacts.forEach((contact,id)=>{
     var listItem=document.createElement("li");
    // listItem.textContent=contact.name+" "+contact.phoneNumber+"<span>Remove</span>";
-    listItem.innerHTML=contact.name+" "+contact.phoneNumber+" "+id+"<span><a href='' onclick='removeFromList("+id+")'>Remove</a></span>";
+    listItem.innerHTML=contact.name+" "+contact.phoneNumber+" "+id+`<span><a href='#' onclick='removeFromList(${id})'>Remove</a></span>`;
     list.appendChild(listItem);
 });
 }////end of displayList
@@ -32,9 +32,10 @@ function addContact(e){
 }////end of addContact
 
 ///////////////////////removeFromList///////////////////////////
-function removeFromList(e,id) {
-    e.preventDefault();
-    alert("hey"+id);
+function removeFromList(id) {
+    contacts=contacts.filter((contact,i)=>(i !==id));
+    console.log(contacts);
+    displayList();
 }
 
 
