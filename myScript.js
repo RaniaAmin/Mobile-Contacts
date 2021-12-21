@@ -50,7 +50,7 @@ function editContactList(id) {
          console.log(document.forms["editContactForm"]);
          console.log("id =",id);
          var editForm=document.forms["editContactForm"];
-         editForm.addEventListener("submit",(e)=>{
+         var listener=(e)=>{
             e.preventDefault();
             console.log("id =",id);
             const newInputName=editForm["name"].value;
@@ -59,14 +59,15 @@ function editContactList(id) {
             
             console.log("old",contacts[id].name+" "+contacts[id].phoneNumber);
             // console.log("New",contacts[id]+"*****"+newInputName+" "+newInputPhone);
-            contacts[id]={name:newInputName,phoneNumber:newInputPhone}
+            contacts[id]={name:newInputName,phoneNumber:newInputPhone,id}
             console.log(contacts[id]);
             console.log("New",contacts[id].name+" "+contacts[id].phoneNumber);
             
             document.getElementById("editBlock").style.display="none";
             displayList();
-            
-        });
+            editForm.removeEventListener("submit",listener);
+        }
+         editForm.addEventListener("submit",listener);
         console.log("id =",id);
         
 }
