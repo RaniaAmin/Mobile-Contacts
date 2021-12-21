@@ -17,7 +17,7 @@
         </div>
         <div id="editBlock" style="display:none;">
             <span id="closeEdit">X</span>
-            <form  id="editContactForm">
+            <form  onsubmit="editContactList(event)" id="editContactForm">
                 Enter the new contact name:<input id="addNewName" type="text" placeholder="Name" name="name" />
                 Enter the new contact phone number:<input id="addNewPhone" type="number" placeholder="Phone Number" name="phone"/>
                 <input type="submit" />

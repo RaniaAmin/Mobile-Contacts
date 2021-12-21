@@ -3,6 +3,7 @@ var contacts=[
     {id:0,name:"rania",phoneNumber:"32534652"},
     {id:1,name:"mohammed", phoneNumber:"2354362663"}
 ]
+var activeContactId=null;
 
 document.addEventListener("load",displayList());
 
@@ -18,7 +19,7 @@ function displayList() {
     var container=document.getElementById("listContainer");
 contacts.forEach((contact,id)=>{
     var listItem=document.createElement("li");    
-    listItem.innerHTML=contact.name+" "+contact.phoneNumber+" "+id+`<span><a href='#' onclick='removeFromList(${contact.id})'>Remove</a><button href='#' id="edit" onclick='editContactList(${contact.id})'>Edit</button></span>`;
+    listItem.innerHTML=contact.name+" "+contact.phoneNumber+" "+`<span><a href='#' onclick='removeFromList(${contact.id})'>Remove</a><a href='#' id="edit" onclick='setContactId(${contact.id})'>Edit</a></span>`;
     list.appendChild(listItem);
 });
 }////end of displayList
@@ -45,31 +46,27 @@ function removeFromList(id) {
 }/////end of removeFromList
 
 //////////////////////editContactList//////////////////////////
-function editContactList(id) {
-        document.getElementById("editBlock").style.display="block";
+function editContactList(event) {
+        // document.getElementById("editBlock").style.display="block";
+        event.preventDefault();
          console.log(document.forms["editContactForm"]);
+         id=activeContactId;
          console.log("id =",id);
          var editForm=document.forms["editContactForm"];
-         var listener=(e)=>{
-            e.preventDefault();
-            console.log("id =",id);
-            const newInputName=editForm["name"].value;
-            const newInputPhone=editForm["phone"].value;
-            console.log(contacts[id]);
-            
-            console.log("old",contacts[id].name+" "+contacts[id].phoneNumber);
-            // console.log("New",contacts[id]+"*****"+newInputName+" "+newInputPhone);
-            contacts[id]={name:newInputName,phoneNumber:newInputPhone,id}
-            console.log(contacts[id]);
-            console.log("New",contacts[id].name+" "+contacts[id].phoneNumber);
-            
-            document.getElementById("editBlock").style.display="none";
-            displayList();
-            editForm.removeEventListener("submit",listener);
-        }
-         editForm.addEventListener("submit",listener);
-        console.log("id =",id);
+         const newInputName=editForm["name"].value;
+         const newInputPhone=editForm["phone"].value;
+         contacts[id]={id,name:newInputName,phoneNumber:newInputPhone}
+         document.getElementById("editBlock").style.display="none";
+         displayList();
+         
+         
         
+        
+}
+/////////////////////////editContactList///////////////////////
+function setContactId(id) {
+    document.getElementById("editBlock").style.display="block";
+    activeContactId=id;
 }
 
 
