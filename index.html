@@ -5,6 +5,11 @@
     <body>
 
         <h2 id="header">Mobile Contents</h2>
+        
+            <input id="search" type="search" placeholder="Search" name="search">
+            <button type="submit" onclick="searchContactList(event)">Search</button>
+            <button type="submit" onclick="displayList(contacts)">Display All</button>
+        
         <form onsubmit="addContact(event)" id="addContactForm">
             Enter the new contact name:<input id="addName" type="text" placeholder="Name" name="name" />
             Enter the new contact phone number:<input id="addPhone" type="number" placeholder="Phone Number" name="phone"/>
