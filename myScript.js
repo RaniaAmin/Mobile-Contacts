@@ -13,7 +13,16 @@ document.getElementById("closeEdit").addEventListener("click",()=>{
     document.getElementById("editBlock").style.display="none";
 })
 ////////////////////displayList function//////////////////////////
-function displayList(currentContactList) {
+function displayList(currentContactList,newCaption="") {
+    var caption=document.getElementById("caption");
+    
+    if (contacts.length === 0){
+        caption.innerText="There are no contacts";
+    }
+    else{
+        caption.innerText=newCaption;
+    }
+    
     var list=document.getElementById("contactList");
     list.innerHTML="";
     currentContactList.forEach((contact,id)=>{
@@ -28,19 +37,37 @@ function addContact(e){
     e.preventDefault();
     const inputName=document.forms["addContactForm"]["name"].value;
     const inputPhone=document.forms["addContactForm"]["phone"].value;
-    var newContact={id:contacts.length,name:inputName,phoneNumber:inputPhone}
-    contacts=[...contacts,newContact]
+    if (inputName !== "" && inputPhone != ""){
+        var max=0;
+        contacts.forEach((contact)=>{
+            if(contact.id > max){
+                max=contact.id;
+            }
+        })
+        console.log("max",max);
+        var newContact={id:max+1,name:inputName,phoneNumber:inputPhone}
+        contacts=[...contacts,newContact]
+        
+        document.forms["addContactForm"]["name"].value="";
+        document.forms["addContactForm"]["phone"].value="";
+        displayList(contacts,"Adding new Contact is Done");
+        console.log(contacts);
+    }
+    else{
+        alert("You have to enter a name and a Phone number");
+    }
     
-    document.forms["addContactForm"]["name"].value="";
-    document.forms["addContactForm"]["phone"].value="";
-    displayList(contacts);
 }////end of addContact
 
 ///////////////////////removeFromList///////////////////////////
 function removeFromList(id) {
-    contacts=contacts.filter((contact,i)=>(i !==id));
-    console.log(contacts);
-    displayList(contacts);
+    if (confirm("Are you sure you want to Remove this contact?!") == true) {
+        contacts=contacts.filter((contact,i)=>(contact.id !==id));
+        console.log(id);
+        displayList(contacts,"Contact Removed");
+        console.log(contacts);
+      }
+    
 }/////end of removeFromList
 
 /////////////////////////editContactList///////////////////////
@@ -59,25 +86,54 @@ function editContactList(event) {
          var editForm=document.forms["editContactForm"];
          const newInputName=editForm["name"].value;
          const newInputPhone=editForm["phone"].value;
-         contacts[id]={id,name:newInputName,phoneNumber:newInputPhone}
-         document.getElementById("editBlock").style.display="none";
-         displayList(contacts);
+         if(newInputName !=="" && newInputPhone !==""){
+             contacts=contacts.map((contact)=>{
+                 if(contact.id===id){
+                     return {id,name:newInputName,phoneNumber:newInputPhone}
+                 }
+                 else{
+                     return contact;
+                 }
+             });
+             console.log(contacts);
+            // contacts[id]={id,name:newInputName,phoneNumber:newInputPhone}
+            document.getElementById("editBlock").style.display="none";
+            displayList(contacts,"Editing is Done");
+            console.log(contacts);
+         }
+         else{
+             alert("You have to enter a name and a Phone number");
+         }
+         
 }/////end of editContactList
 
 function searchContactList(event) {
     event.preventDefault();
     var searchContact=document.getElementById("search").value;
-    // console.log(searchContact.value);
     
-    var searchedList=contacts.filter((contact,i)=>{
-        console.log("any contact",contact);
-        if (contact.name.includes(searchContact)||contact.phoneNumber.includes(searchContact)){
-            console.log(contact);
-            return contact;
+    
+    if (searchContact==""){
+        
+        displayList(contacts,"");
+    }
+    else if(searchContact !=""){
+        var searchedList=contacts.filter((contact,i)=>{
+            console.log("any contact",contact);
+            if (contact.name.includes(searchContact)||contact.phoneNumber.includes(searchContact)){
+                console.log(contact);
+                return contact;
+            }
+        });
+        console.log("searchedList",searchedList);
+        
+        
+        displayList(searchedList,"Your search result");
+        if (searchedList.length==0){
+            
+            displayList(contacts,"Not Found");
         }
-    });
-    console.log("searchedList",searchedList);
-    displayList(searchedList);
+    }
+    
 
     
 }
