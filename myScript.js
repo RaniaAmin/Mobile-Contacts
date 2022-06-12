@@ -27,7 +27,7 @@ function displayList(currentContactList,newCaption="") {
     list.innerHTML="";
     currentContactList.forEach((contact,id)=>{
     var listItem=document.createElement("li");    
-    listItem.innerHTML=contact.name+" "+contact.phoneNumber+" "+`<span><a href='#' onclick='removeFromList(${contact.id})'>Remove</a><a href='#' id="edit" onclick='setContactId(${contact.id})'>Edit</a></span>`;
+    listItem.innerHTML=contact.name+" "+contact.phoneNumber+" "+`<span><a href='#' class="btn btn-danger" onclick='removeFromList(${contact.id})'>Remove</a><a href='#' class="btn btn-light" id="edit" onclick='setContactId(${contact.id})'>Edit</a></span>`;
     list.appendChild(listItem);
 });
 }////end of displayList
